@@ -5,11 +5,23 @@ import Grid from '@mui/material/Grid';
 
 import Tile from '../../components/Tile/Tile';
 import Clock from '../../components/Clock/Clock';
+import ImageCarousel from '../../components/ImageCarousel/ImageCarousel';
 
 export default function Home () {
+
+  const carousel_images = [
+    "carousel_images/calm.jpg",
+    "carousel_images/cherry.jpg",
+    "carousel_images/corn.jpg",
+    "carousel_images/iceland.jpg"
+  ];
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container>
+        <Grid item xs={12} mt={2} mb={2}>
+          <ImageCarousel photos={carousel_images}/>
+        </Grid>
         <Grid item xs={12} mt={2} mb={2}>
           <Grid item xs={3} display="flex" alignItems="center" justifyContent="center">
             <Clock/>

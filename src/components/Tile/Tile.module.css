@@ -1,5 +1,5 @@
 
-img {
+.tile_img {
   width: 100%;  /* Make image fill entire Box */
   height: 100%;
   border-radius: 10px;

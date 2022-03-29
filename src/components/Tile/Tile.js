@@ -15,8 +15,9 @@ export default function Tile (props) {
     >
       <a href={props.url}>
         <img
-            src={props.imageString}
-            alt={props.imageAlt}
+          class={styles.tile_img}
+          src={props.imageString}
+          alt={props.imageAlt}
         />
       </a>
     </Box>
