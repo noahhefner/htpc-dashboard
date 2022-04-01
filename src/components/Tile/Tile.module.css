@@ -8,4 +8,7 @@
 
 .tile_img:hover {
   transform: scale(1.15);
+  -moz-box-shadow: 0 0 4px 4px #616161;
+  -webkit-box-shadow: 0 0 4px 4px #616161;
+  box-shadow: 0 0 4px 4px #616161;
 }

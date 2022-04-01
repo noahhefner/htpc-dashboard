@@ -8,7 +8,7 @@ export default function Tile (props) {
     <Box
       sx={{
         width: "80%",
-        height: "90%",
+        height: "100%",
         maxWidth: 400,
         maxHeight: 200,
       }}
