@@ -18,7 +18,7 @@ export default function Clock (props) {
     if (hours < 12) {
       return hours + ":" + minutes + " AM";
     } else {
-      return hours + ":" + minutes + " PM";
+      return hours % 12 + ":" + minutes + " PM";
     }
 
   }
