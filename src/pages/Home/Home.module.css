@@ -1,0 +1,8 @@
+.settings_button {
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+  right: 40px;
+  top:40px;
+  cursor: pointer;
+}

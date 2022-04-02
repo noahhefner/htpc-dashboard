@@ -1,7 +1,9 @@
-// import styles from './Home.module.css';
+import styles from './Home.module.css';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ButtonUnstyled from '@mui/base/ButtonUnstyled';
 
 import Tile from '../../components/Tile/Tile';
 import Clock from '../../components/Clock/Clock';
@@ -69,11 +71,11 @@ export default function Home () {
             <Clock/>
           </Grid>
         </Grid>
-        <Grid container item xs={12}>
+        <Grid container item xs={12} rowSpacing={8} columnSpacing={3}>
           {
             apps.map((app) => {
               return (
-                <Grid item xs={3} mb={8} display="flex" alignItems="center" justifyContent="center" key={app.title}>
+                <Grid item xs={3} display="flex" alignItems="center" justifyContent="center" key={app.title}>
                   <Tile
                     imageString={app.image}
                     imageAlt={app.title}
@@ -85,6 +87,9 @@ export default function Home () {
           }
         </Grid>
       </Grid>
+      <ButtonUnstyled className={styles.settings_button}>
+        <SettingsIcon fontSize="large"/>
+      </ButtonUnstyled>
     </Box>
   );
 }
