@@ -7,11 +7,11 @@ export default function Tile (props) {
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
-        maxWidth: 400,
-        maxHeight: 200,
+        width: 400,
+        height: 200,
       }}
+      alignItems="center"
+      justifyContent="center"
     >
       <a href={props.url}>
         <img

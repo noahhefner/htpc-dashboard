@@ -1,21 +1,12 @@
 import React, {useState} from 'react';
-
-import styles from './Home.module.css';
-
-import Box from '@mui/material/Box';
+import RGL, { WidthProvider } from "react-grid-layout";
 import Grid from '@mui/material/Grid';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ButtonUnstyled from '@mui/base/ButtonUnstyled';
-
-import Tile from '../../components/Tile/Tile';
-import Clock from '../../components/Clock/Clock';
-import ModalSettings from '../../components/ModalSettings/ModalSettings';
+import Tile from "../../components/Tile/Tile";
+import styles from "./Home.module.css";
 
 export default function Home () {
 
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const handleSettingsOpen = () => setSettingsOpen(true);
-  const handleSettingsClose = () => setSettingsOpen(false);
+  const ReactGridLayout = WidthProvider(RGL);
 
   const apps = [
     {
@@ -70,34 +61,56 @@ export default function Home () {
     },
   ];
 
+  const tile_width = 3;
+  const tile_height = 12;
+  const columns = 12;
+  const row_height = 12;
+
+  /*
+
+  When editing layout:
+    - disable pointer-events on images
+    - disable user-select on images
+    - set static to false on tile divs
+  When not editing layout:
+  - enable pointer-events on images
+  - enable user-select on images
+  - set static to true on tile divs
+
+  .react-grid-item img {
+    pointer-events: none;
+    user-select: none;
+  }
+  */
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container>
-        <Grid container item xs={12} mt={4} mb={4}>
-          <Grid item xs={3} display="flex" alignItems="center" justifyContent="center">
-            <Clock/>
-          </Grid>
-        </Grid>
-        <Grid container item xs={12} rowSpacing={8} columnSpacing={3}>
-          {
-            apps.map((app) => {
-              return (
-                <Grid item xs={3} display="flex" alignItems="center" justifyContent="center" key={app.title}>
+    <div>
+      <ReactGridLayout
+        className="layout"
+        cols={columns}
+        rowHeight={row_height}
+      >
+        {
+          apps.map((app, index) => {
+            return (
+              <div
+                className={styles.box}
+                key={app.title}
+                data-grid={{ w: tile_width, h: tile_height, x: (index * tile_width) % columns, y: 0, static: true }}
+              >
+                <Grid item display="flex" alignItems="center" justifyContent="center" key={app.title}>
                   <Tile
                     imageString={app.image}
                     imageAlt={app.title}
                     url={app.url}
                   />
                 </Grid>
-              );
-            })
-          }
-        </Grid>
-      </Grid>
-      <ButtonUnstyled className={styles.settings_button} onClick={handleSettingsOpen}>
-        <SettingsIcon fontSize="large"/>
-      </ButtonUnstyled>
-      <ModalSettings open={settingsOpen} onSettingsClose={handleSettingsClose}/>
-    </Box>
+              </div>
+            )
+          })
+        }
+      </ReactGridLayout>
+    </div>
   );
+
 }
