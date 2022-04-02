@@ -1,3 +1,5 @@
+import React, {useState} from 'react';
+
 import styles from './Home.module.css';
 
 import Box from '@mui/material/Box';
@@ -7,8 +9,13 @@ import ButtonUnstyled from '@mui/base/ButtonUnstyled';
 
 import Tile from '../../components/Tile/Tile';
 import Clock from '../../components/Clock/Clock';
+import ModalSettings from '../../components/ModalSettings/ModalSettings';
 
 export default function Home () {
+
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const handleSettingsOpen = () => setSettingsOpen(true);
+  const handleSettingsClose = () => setSettingsOpen(false);
 
   const apps = [
     {
@@ -87,9 +94,10 @@ export default function Home () {
           }
         </Grid>
       </Grid>
-      <ButtonUnstyled className={styles.settings_button}>
+      <ButtonUnstyled className={styles.settings_button} onClick={handleSettingsOpen}>
         <SettingsIcon fontSize="large"/>
       </ButtonUnstyled>
+      <ModalSettings open={settingsOpen} onSettingsClose={handleSettingsClose}/>
     </Box>
   );
 }
