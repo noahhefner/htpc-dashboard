@@ -1,13 +1,8 @@
 .settings_button {
   position: absolute;
-  padding: 0px;
-  margin: 0px;
-  right: 40px;
-  top:40px;
+  margin-right: 20px;
+  margin-top: 20px;
+  right: 0px;
+  top:0px;
   cursor: pointer;
-}
-
-.box {
-  background-color: lightblue;
-  text-align: center;
 }

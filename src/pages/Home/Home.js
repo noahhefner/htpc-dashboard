@@ -1,12 +1,38 @@
+// React
 import React, {useState} from 'react';
-import RGL, { WidthProvider } from "react-grid-layout";
-import Grid from '@mui/material/Grid';
+// Material UI Components
+import SettingsIcon from '@mui/icons-material/Settings';
+import ButtonUnstyled from '@mui/base/ButtonUnstyled';
+// react-grid-layout
+import { WidthProvider, Responsive } from "react-grid-layout";
+import "/node_modules/react-grid-layout/css/styles.css";
+// Custom Components
 import Tile from "../../components/Tile/Tile";
+import Clock from '../../components/Clock/Clock';
+import ModalSettings from '../../components/ModalSettings/ModalSettings';
+// Custom CSS
 import styles from "./Home.module.css";
 
 export default function Home () {
 
-  const ReactGridLayout = WidthProvider(RGL);
+  const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const tile_width = 3;
+  const tile_height = 12;
+  const columns = 12;
+  const row_height = 12;
+
+  const handleSettingsOpen = () => setSettingsOpen(true);
+
+  const handleSettingsClose = () => setSettingsOpen(false);
+
+  const handleEditSwitchFlipped = (e) => {
+    console.log(e.target.checked)
+    setIsEditing(e.target.checked);
+  }
 
   const apps = [
     {
@@ -61,56 +87,47 @@ export default function Home () {
     },
   ];
 
-  const tile_width = 3;
-  const tile_height = 12;
-  const columns = 12;
-  const row_height = 12;
-
-  /*
-
-  When editing layout:
-    - disable pointer-events on images
-    - disable user-select on images
-    - set static to false on tile divs
-  When not editing layout:
-  - enable pointer-events on images
-  - enable user-select on images
-  - set static to true on tile divs
-
-  .react-grid-item img {
-    pointer-events: none;
-    user-select: none;
-  }
-  */
-
   return (
-    <div>
-      <ReactGridLayout
-        className="layout"
-        cols={columns}
-        rowHeight={row_height}
+    <ResponsiveReactGridLayout
+      className="layout"
+      cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+      rowHeight={row_height}
+      autoSize={false}
+      isResizable={false}
+    >
+      <div
+        key="header"
+        data-grid={{ w: 12, h: tile_height / 2, x: 0, y: 0, static: true }}
       >
-        {
-          apps.map((app, index) => {
-            return (
-              <div
-                className={styles.box}
-                key={app.title}
-                data-grid={{ w: tile_width, h: tile_height, x: (index * tile_width) % columns, y: 0, static: true }}
-              >
-                <Grid item display="flex" alignItems="center" justifyContent="center" key={app.title}>
-                  <Tile
-                    imageString={app.image}
-                    imageAlt={app.title}
-                    url={app.url}
-                  />
-                </Grid>
-              </div>
-            )
-          })
-        }
-      </ReactGridLayout>
-    </div>
+        <Clock/>
+        <ButtonUnstyled className={styles.settings_button} onClick={handleSettingsOpen}>
+          <SettingsIcon fontSize="large"/>
+        </ButtonUnstyled>
+        <ModalSettings
+          open={settingsOpen}
+          onSettingsClose={handleSettingsClose}
+          isEditing={isEditing}
+          onEditSwitchFlipped={handleEditSwitchFlipped}
+        />
+      </div>
+      {
+        apps.map((app, index) => {
+          return (
+            <div
+              key={app.title}
+              data-grid={{ w: tile_width, h: tile_height, x: (index * tile_width) % columns, y: tile_height / 2, static: !isEditing }}
+            >
+              <Tile
+                imageString={app.image}
+                imageAlt={app.title}
+                url={app.url}
+                isEditing={isEditing}
+              />
+            </div>
+          )
+        })
+      }
+    </ResponsiveReactGridLayout>
   );
 
 }

@@ -1,7 +1,7 @@
+// React
 import React from 'react';
-import Box from '@mui/material/Box';
-
-import styles from "./Clock.module.css";
+// Custom CSS
+import "./Clock.module.css";
 
 export default function Clock (props) {
 
@@ -24,8 +24,7 @@ export default function Clock (props) {
   }
 
   return (
-    <Box>
-      <p>{getTime()}</p>
-    </Box>
+    <p>{getTime()}</p>
   );
+
 }

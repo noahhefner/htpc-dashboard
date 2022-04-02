@@ -1,9 +1,11 @@
 
 .tile_img {
-  width: 100%;  /* Make image fill entire Box */
+  width: 100%;  /* Make image fill Box (shrink or enlarge) */
   height: 100%;
   border-radius: 10px;
   border: 3px solid #616161;
+  user-select: all !important;  /* Overwrites react-grid-layout css */
+  pointer-events: all !important;  /* Overwrites react-grid-layout css */
 }
 
 .tile_img:hover {
@@ -11,4 +13,11 @@
   -moz-box-shadow: 0 0 4px 4px #616161;
   -webkit-box-shadow: 0 0 4px 4px #616161;
   box-shadow: 0 0 4px 4px #616161;
+}
+
+.tile_img_editing {
+  width: 100%;  /* Make image fill entire Box */
+  height: 100%;
+  border-radius: 10px;
+  border: 3px solid #616161;
 }
