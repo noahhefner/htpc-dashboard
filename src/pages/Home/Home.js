@@ -13,10 +13,6 @@ import ModalSettings from '../../components/ModalSettings/ModalSettings';
 
 export default function Home () {
 
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const handleSettingsOpen = () => setSettingsOpen(true);
-  const handleSettingsClose = () => setSettingsOpen(false);
-
   const apps = [
     {
       "id": "netflix",
@@ -69,6 +65,13 @@ export default function Home () {
       "url": "https://tv.youtube.com",
     },
   ];
+
+  const [layout, setLayout] = useState(apps);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const handleSettingsOpen = () => setSettingsOpen(true);
+  const handleSettingsClose = () => {
+    setSettingsOpen(false);
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
