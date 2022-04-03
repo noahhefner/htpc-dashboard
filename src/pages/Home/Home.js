@@ -19,52 +19,52 @@ export default function Home () {
 
   const apps = [
     {
-      "title": "netflix",
+      "id": "netflix",
       "image": "tile_images/netflix.jpg",
       "url": "https://www.netflix.com",
     },
     {
-      "title": "hulu",
+      "id": "hulu",
       "image": "tile_images/hulu.png",
       "url": "https://www.hulu.com",
     },
     {
-      "title": "prime",
+      "id": "prime",
       "image": "tile_images/prime.png",
       "url": "https://www.amazon.com/Prime-Video/b?node=2676882011",
     },
     {
-      "title": "apple_tv_plus",
+      "id": "apple_tv_plus",
       "image": "tile_images/apple_tv_plus.png",
       "url": "https://tv.apple.com",
     },
     {
-      "title": "spotify",
+      "id": "spotify",
       "image": "tile_images/spotify.jpeg",
       "url": "https://open.spotify.com",
     },
     {
-      "title": "disney_plus",
+      "id": "disney_plus",
       "image": "tile_images/disney_plus.jpeg",
       "url": "https://www.disneyplus.com",
     },
     {
-      "title": "espn_plus",
+      "id": "espn_plus",
       "image": "tile_images/espn_plus.jpeg",
       "url": "https://plus.espn.com",
     },
     {
-      "title": "peacock",
+      "id": "peacock",
       "image": "tile_images/peacock.jpg",
       "url": "https://www.peacocktv.com",
     },
     {
-      "title": "youtube",
+      "id": "youtube",
       "image": "tile_images/youtube.jpg",
       "url": "https://www.youtube.com",
     },
     {
-      "title": "youtube_tv",
+      "id": "youtube_tv",
       "image": "tile_images/youtube_tv.png",
       "url": "https://tv.youtube.com",
     },
@@ -82,10 +82,10 @@ export default function Home () {
           {
             apps.map((app) => {
               return (
-                <Grid item xs={3} display="flex" alignItems="center" justifyContent="center" key={app.title}>
+                <Grid item xs={3} display="flex" alignItems="center" justifyContent="center" key={app.id}>
                   <Tile
                     imageString={app.image}
-                    imageAlt={app.title}
+                    imageAlt={app.id}
                     url={app.url}
                   />
                 </Grid>
@@ -97,7 +97,7 @@ export default function Home () {
       <ButtonUnstyled className={styles.settings_button} onClick={handleSettingsOpen}>
         <SettingsIcon fontSize="large"/>
       </ButtonUnstyled>
-      <ModalSettings open={settingsOpen} onSettingsClose={handleSettingsClose}/>
+      <ModalSettings open={settingsOpen} onSettingsClose={handleSettingsClose} apps={apps}/>
     </Box>
   );
 }
