@@ -1,8 +1,9 @@
 // React
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 // Material UI Components
 import SettingsIcon from '@mui/icons-material/Settings';
 import ButtonUnstyled from '@mui/base/ButtonUnstyled';
+import Switch from '@mui/material/Switch';
 // react-grid-layout
 import { WidthProvider, Responsive } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
@@ -13,12 +14,44 @@ import ModalSettings from '../../components/ModalSettings/ModalSettings';
 // Custom CSS
 import styles from "./Home.module.css";
 
+const getFromLS = (key) => {
+  console.log("retrieving layout")
+  let ls = {};
+  if (global.localStorage) {
+    try {
+      ls = JSON.parse(global.localStorage.getItem("rgl-8")) || {};
+    } catch (e) {
+      /*Ignore*/
+    }
+  }
+  return ls[key];
+}
+
+const saveToLS = (key, value) => {
+  console.log("saving layout")
+  if (global.localStorage) {
+    global.localStorage.setItem(
+      "rgl-8",
+      JSON.stringify({
+        [key]: value
+      })
+    );
+  }
+}
+
+const savedLayout = getFromLS("layouts") || {};
+
 export default function Home () {
 
   const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
   const [isEditing, setIsEditing] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [layouts, setLayouts] = useState(JSON.parse(JSON.stringify(savedLayout)));
+
+  const onLayoutChange = (layout, layouts) => {
+    saveToLS("layouts", layouts);
+  }
 
   const tile_width = 3;
   const tile_height = 12;
@@ -30,7 +63,6 @@ export default function Home () {
   const handleSettingsClose = () => setSettingsOpen(false);
 
   const handleEditSwitchFlipped = (e) => {
-    console.log(e.target.checked)
     setIsEditing(e.target.checked);
   }
 
@@ -94,12 +126,15 @@ export default function Home () {
       rowHeight={row_height}
       autoSize={false}
       isResizable={false}
+      layouts={layouts}
+      onLayoutChange={(layout, layouts) => onLayoutChange(layout, layouts)}
     >
       <div
         key="header"
         data-grid={{ w: 12, h: tile_height / 2, x: 0, y: 0, static: true }}
       >
         <Clock/>
+        <Switch checked={isEditing} onChange={handleEditSwitchFlipped}/>
         <ButtonUnstyled className={styles.settings_button} onClick={handleSettingsOpen}>
           <SettingsIcon fontSize="large"/>
         </ButtonUnstyled>
