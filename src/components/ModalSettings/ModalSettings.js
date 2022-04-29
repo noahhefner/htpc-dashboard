@@ -54,7 +54,7 @@ export default function ModalSettings (props) {
   return (
     <Modal
       open={props.open}
-      onClose={props.onSettingsClose}
+      onClose={props.onSettingsClose(apps)}
     >
       <Box className={styles.settings_box}>
         <Grid container display="flex" alignItems="center" justifyContent="center">

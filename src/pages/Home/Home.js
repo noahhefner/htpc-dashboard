@@ -13,7 +13,7 @@ import ModalSettings from '../../components/ModalSettings/ModalSettings';
 
 export default function Home () {
 
-  const apps = [
+  var apps = [
     {
       "id": "netflix",
       "image": "tile_images/netflix.jpg",
@@ -69,8 +69,49 @@ export default function Home () {
   const [layout, setLayout] = useState(apps);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const handleSettingsOpen = () => setSettingsOpen(true);
-  const handleSettingsClose = () => {
+  const handleSettingsClose = (newOrder) => {
+    setLayout(newOrder);
     setSettingsOpen(false);
+  }
+
+  // a little function to help us with reordering the result
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
+  const grid = 8;
+
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: "none",
+    padding: grid * 2,
+    margin: `0 0 ${grid}px 0`,
+
+    // styles we need to apply on draggables
+    ...draggableStyle
+  });
+
+  const getListStyle = (isDraggingOver) => ({
+    background: isDraggingOver ? "lightblue" : "lightgrey",
+    padding: grid,
+    width: "100%"
+  });
+
+  const onDragEnd = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+    // sort the list of apps to match displayed list
+    const items = reorder(
+      apps,
+      result.source.index,
+      result.destination.index
+    );
+    setApps(items);
   }
 
   return (
@@ -81,26 +122,43 @@ export default function Home () {
             <Clock/>
           </Grid>
         </Grid>
-        <Grid container item xs={12} rowSpacing={8} columnSpacing={3}>
-          {
-            apps.map((app) => {
-              return (
-                <Grid item xs={3} display="flex" alignItems="center" justifyContent="center" key={app.id}>
-                  <Tile
-                    imageString={app.image}
-                    imageAlt={app.id}
-                    url={app.url}
-                  />
-                </Grid>
-              );
-            })
-          }
-        </Grid>
       </Grid>
-      <ButtonUnstyled className={styles.settings_button} onClick={handleSettingsOpen}>
-        <SettingsIcon fontSize="large"/>
-      </ButtonUnstyled>
-      <ModalSettings open={settingsOpen} onSettingsClose={handleSettingsClose} apps={apps}/>
+      <Box className={styles.settings_box}>
+        <Grid container display="flex" alignItems="center" justifyContent="center">
+          <Grid container item xs={6}>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided, snapshot) => (
+                  <div 
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                  >
+                    {apps.map((item, index) => (
+                      <Draggable key={item.id} draggableId={item.id} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
+                            {item.id}
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 }
